@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DeCalc for Metadata Test</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fb;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #0f62fe;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    code {
+      background-color: #eef3f8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.95em;
+    }
+
+    .note {
+      background: #e8f0fe;
+      padding: 12px 16px;
+      border-left: 4px solid #0f62fe;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+
+    script[type="application/ld+json"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Digital Enabler Test Page for Smart Site Metadata Crawler</h1>
+    <p>This test page includes <code>ld+json</code> metadata embedded within the body of the HTML. It simulates a realistic structure for pages using rich structured data to improve discoverability by search engines or internal metadata crawlers.</p>
+    
+    <p>The metadata refers to the <strong>IBM Maximo Price Estimator</strong> tool and is part of the Digital Enabler initiative. It helps users explore IBM Maximo pricing options with estimated discounts for SaaS solutions.</p>
+
+    <div class="note">
+      <strong>Note:</strong> The metadata script is intentionally placed within the <code>&lt;body&gt;</code> tag to match the final integration format used across IBM’s dynamic content pages.
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": "maximo-price-estimator-mx-es",
+    "applicationCategory": "BusinessApplication",
+    "dateCreated": "2023-12-01T21:44:14.098Z",
+    "dateModified": "2024-09-11T22:18:29.519Z",
+    "name": "IBM Maximo price estimator",
+    "description": "Explore las opciones de tarifas de SaaS y descubra la edición más adecuada para su organización.",
+    "inLanguage": "es-MX",
+    "productName": "Maximo",
+    "brand": "Automation",
+    "url": "https://www.ibm.com/mx-es/products/maximo/pricing#price-estimator",
+    "image": "https://www.ibm.com/content/dam/connectedassets-adobe-cms/worldwide-content/creative-assets/s-migr/ul/g/f0/a0/maximo_pricing1.png/_jcr_content/renditions/cq5dam.medium.1584.1584.png",
+    "ibm:asset": "Digital Enabler",
+    "ibm:assetType": "Calculator",
+    "ibm:assetSubType": "Price Estimator",
+    "ibm:assetDetails": "Los precios calculados son estimaciones proporcionadas únicamente con fines informativos, teniendo en cuenta los posibles descuentos de IBM, y no constituyen una oferta formal de IBM o de un socio comercial de IBM. La estimación puede reflejar el precio total con descuento. Ciertos factores como la configuración, los complementos o los requisitos adicionales afectarán al precio final. Los socios comerciales de IBM fijan y proporcionan sus propios precios de IBM Maximo Application Suite, y ni IBM ni los socios comerciales de IBM están sujetos a la estimación proporcionada.",
+    "ibm:ut30": "30BH6",
+    "publisher": {
+      "@type": "Organization",
+      "name": "IBM"
+    }
+  }
+  </script>
+</body>
+</html>
