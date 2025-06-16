@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DeDemo for Metadata Test</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fb;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #0f62fe;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    code {
+      background-color: #eef3f8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.95em;
+    }
+
+    .note {
+      background: #e8f0fe;
+      padding: 12px 16px;
+      border-left: 4px solid #0f62fe;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+
+    script[type="application/ld+json"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Digital Enabler Test Page for Smart Site Metadata Crawler</h1>
+    <p>This test page includes <code>ld+json</code> metadata embedded within the body of the HTML. It simulates a realistic structure for pages using rich structured data to improve discoverability by search engines or internal metadata crawlers.</p>
+    
+    <p>The metadata refers to the <strong>Maximo Visual Inspection self-guided demo</strong> and is part of the Digital Enabler initiative. It demonstrates how you can make automated visual inspections a reality.</p>
+
+    <div class="note">
+      <strong>Note:</strong> The metadata script is intentionally placed within the <code>&lt;body&gt;</code> tag to match the final integration format used across IBM’s dynamic content pages.
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": "mvs-demo-us-en",
+    "applicationCategory": "BusinessApplication",
+    "dateCreated": "2023-12-01T21:44:14.098Z",
+    "dateModified": "2024-09-11T22:18:29.519Z",
+    "name": "Maximo Visual Inspection self-guided demo",
+    "description": "Maximize asset availability and performance, while extending the lifecycle, by optimizing the efficiency and use of all assets.",
+    "inLanguage": "en-US",
+    "productName": "Maximo",
+    "brand": "Automation",
+    "url": "https://www.ibm.com/resources/digital-innovation/demos/mas-mvi",
+    "image": "https://www.ibm.com/content/dam/connectedassets-adobe-cms/worldwide-content/creative-assets/s-migr/ul/g/f0/a0/maximo_pricing1.png/_jcr_content/renditions/cq5dam.medium.1584.1584.png",
+    "ibm:asset": "Digital Enabler",
+    "ibm:assetType": "Demo",
+    "ibm:assetSubType": "Demo",
+    "ibm:assetDetails": "This demo demonstrates how you can make automated visual inspections a reality. Train accurate and efficient AI models for automated visual inspections. See how you can put the power of computer vision AI capabilities into the hands of your quality control and inspection teams.",
+    "ibm:ut30": "30BH6",
+    "publisher": {
+      "@type": "Organization",
+      "name": "IBM"
+    }
+  }
+  </script>
+</body>
+</html>
