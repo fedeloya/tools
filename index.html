@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Federico Loyato</title>
+  <link rel="icon" href="img/favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: white;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #iframe-container {
+      flex: 1;
+      width: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    nav {
+      background: #ffffff;
+      padding: 12px;
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    nav .button-group {
+      display: flex;
+      flex-wrap: wrap; /* Enables responsive wrapping */
+      justify-content: center;
+      gap: 8px;
+      background-color: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 9999px;
+      padding: 8px;
+    }
+
+    nav .button-group button,
+    nav .button-group a {
+      background: transparent;
+      color: #374151;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      border-radius: 9999px;
+    }
+
+    nav .button-group button:hover,
+    nav .button-group a:hover {
+      background-color: #e5e7eb;
+    }
+
+    nav .button-group button.active {
+      background-color: #d1d5db;
+      color: #111827;
+    }
+
+    nav .button-group a.home-link {
+      background-color: #f3f4f6;
+      color: #9ca3af;
+      pointer-events: all;
+    }
+
+    nav .button-group a.home-link:hover {
+      background-color: #e5e7eb;
+      color: #6b7280;
+    }
+
+    @media (max-width: 480px) {
+      nav .button-group {
+        padding: 6px;
+        gap: 6px;
+      }
+
+      nav .button-group button,
+      nav .button-group a {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="iframe-container">
+    <iframe id="main-iframe" src=""></iframe>
+  </div>
+
+  <nav>
+    <div class="button-group">
+      <a href="https://w3.ibm.com/w3publisher/federico-loyato" target="_blank" class="home-link">Home</a>
+      <button onclick="loadIframe('Science')">Science</button>
+      <button onclick="loadIframe('Cinema')">Cinema</button>
+      <button onclick="loadIframe('Technology')">Technology</button>
+      <button onclick="loadIframe('75 Innovations')">75 Innovations</button>
+      <button onclick="loadIframe('Sales')">Sales</button>
+      <button onclick="loadIframe('Education')">Education</button>
+      <button onclick="loadIframe('Essence')">Essence</button>
+    </div>
+  </nav>
+
+  <script>
+    const iframeLinks = {
+      'Science': 'https://cdn.wordart.com/iframe/u2xw0nb43y7j',
+      'Cinema': 'https://cdn.wordart.com/iframe/tekcm570ubvs',
+      'Technology': 'https://cdn.wordart.com/iframe/l8dktct9zu7s',
+      '75 Innovations': 'https://cdn.wordart.com/iframe/g4knogngj2e3',
+      'Sales': 'https://cdn.wordart.com/iframe/wgqpq9mjzm8v',
+      'Education': 'https://cdn.wordart.com/iframe/i8imitosfql1',
+      'Essence': 'https://cdn.wordart.com/iframe/815rs0096e01'
+    };
+
+    function loadIframe(section) {
+      const iframe = document.getElementById('main-iframe');
+      iframe.src = iframeLinks[section] || iframeLinks['75 Innovations'];
+
+      history.replaceState(null, '', '#' + encodeURIComponent(section));
+
+      document.querySelectorAll('nav button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === section) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const anchor = decodeURIComponent(location.hash.substring(1)) || '75 Innovations';
+      loadIframe(anchor);
+    });
+  </script>
+</body>
+</html>
