@@ -1,127 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
- <meta charset="UTF-8">
- <meta property="og:title" content="Fede's Kitchen Design vs Reality Slider" />
- <meta property="og:type" content="website" />
- <meta property="og:url" content="https://fedeloya.github.io/tools/archi/kit/" />
- <meta property="og:image" content="https://fedeloya.github.io/tools/archi/kit/img/kitchen-preview.jpg" />
- <meta property="og:description" content="Quickly compare render design with real photograph. Enjoy it.">
- <meta property="og:image:width" content="1200">
- <meta property="og:image:height" content="773">
- <meta name="description" content="Quickly compare render design with real photograph. Enjoy it.">
- <meta name="title" content="Quickly compare render design with real photograph. Enjoy it.">
- <link rel="icon" href="img/favicon.ico">
- <title>Fede's Kitchen Design vs Reality Slider</title>
- <style>
-  html,
-  body {
-   margin: 0;
-   padding: 0;
-   height: 100%;
-   overflow: hidden;
-   background: #000;
-   user-select: none;
-   /* Disable selection on body */
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Split View (Centered) with Full Pan</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      user-select: none;
+      touch-action: none;
+    }
 
-  .container {
-   position: relative;
-   width: 100%;
-   height: 100vh;
-   cursor: ew-resize;
-  }
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      cursor: ew-resize;
+      overflow: hidden;
+    }
 
-  .container img {
-   position: absolute;
-   top: 0;
-   left: 0;
-   height: 100%;
-   width: 100%;
-   object-fit: cover;
-   pointer-events: none;
-   /* Disable mouse interaction */
-   user-drag: none;
-   -webkit-user-drag: none;
-  }
+    .layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
 
-  .design {
-   clip-path: inset(0 50% 0 0);
-   z-index: 2;
-  }
+    .layer img {
+      position: absolute;
+      user-drag: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
 
-  .reality {
-   z-index: 1;
-  }
+    /* Default: fit to height (mobile), horizontally centered */
+    .layer img {
+      height: 100%;
+      width: auto;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-  .slider {
-   position: absolute;
-   top: 0;
-   bottom: 0;
-   width: 3px;
-   background: white;
-   left: 50%;
-   transform: translateX(-1.5px);
-   z-index: 3;
-  }
+    /* Desktop: fit to width, vertically centered */
+    @media (min-width: 1280px) {
+      .layer img {
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
 
- </style>
+    .design-layer {
+      clip-path: inset(0 50% 0 0);
+      z-index: 2;
+    }
+
+    .reality-layer {
+      z-index: 1;
+    }
+
+    .slider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: white;
+      left: 50%;
+      transform: translateX(-1.5px);
+      z-index: 3;
+    }
+  </style>
 </head>
-
 <body>
 
- <div class="container" id="sliderContainer">
-  <img class="reality" id="realityImg" src="" alt="Reality" draggable="false">
-  <img class="design" id="designImg" src="" alt="Design Render" draggable="false">
-  <div class="slider" id="slider"></div>
- </div>
+  <div class="container" id="sliderContainer">
+    <div class="layer reality-layer" id="realityLayer">
+      <img src="img/kitchen-real.png" alt="Reality" id="realityImg" />
+    </div>
+    <div class="layer design-layer" id="designLayer">
+      <img src="img/kitchen-render.png" alt="Design" id="designImg" />
+    </div>
+    <div class="slider" id="slider"></div>
+  </div>
 
- <script type="application/json" id="imageData">
-  {
-   "design": "img/kitchen-render.png",
-   "reality": "img/kitchen-real.png"
-  }
+  <script>
+    const container = document.getElementById('sliderContainer');
+    const slider = document.getElementById('slider');
+    const designImg = document.getElementById('designImg');
+    const realityImg = document.getElementById('realityImg');
+    const designLayer = document.getElementById('designLayer');
 
- </script>
+    let splitPercentage = 50;
+    let panOffset = 0;
+    let isDragging = false;
+    let dragMode = null;
+    let startX = 0;
 
- <script>
-  const data = JSON.parse(document.getElementById('imageData').textContent);
-  document.getElementById('designImg').src = data.design;
-  document.getElementById('realityImg').src = data.reality;
+    function updateSplit() {
+      designLayer.style.clipPath = `inset(0 ${100 - splitPercentage}% 0 0)`;
+      slider.style.left = `${splitPercentage}%`;
+    }
 
-  const container = document.getElementById('sliderContainer');
-  const designImg = document.getElementById('designImg');
-  const slider = document.getElementById('slider');
+    function updatePan() {
+      const isDesktop = window.innerWidth >= 1280;
+      const imageWidth = getImageWidth(designImg);
+      const containerWidth = container.clientWidth;
 
-  let isDragging = false;
+      const overflow = imageWidth > containerWidth ? imageWidth - containerWidth : 0;
+      const halfOverflow = overflow / 2;
 
-  const updateSlider = (x) => {
-   const rect = container.getBoundingClientRect();
-   const offsetX = Math.max(0, Math.min(x - rect.left, rect.width));
-   const percentage = (offsetX / rect.width) * 100;
+      const minPan = -halfOverflow;
+      const maxPan = halfOverflow;
 
-   designImg.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-   slider.style.left = `${percentage}%`;
-  };
+      // Clamp panOffset within allowed range
+      panOffset = Math.min(maxPan, Math.max(minPan, panOffset));
 
-  container.addEventListener('mousedown', () => isDragging = true);
-  container.addEventListener('mouseup', () => isDragging = false);
-  container.addEventListener('mouseleave', () => isDragging = false);
-  container.addEventListener('mousemove', (e) => {
-   if (!isDragging) return;
-   updateSlider(e.clientX);
-  });
+      if (isDesktop) {
+        // For desktop, image is vertically centered (translateY(-50%)) plus horizontal pan
+        designImg.style.transform = `translateY(-50%) translateX(${panOffset}px)`;
+        realityImg.style.transform = `translateY(-50%) translateX(${panOffset}px)`;
+      } else {
+        // For mobile, image is horizontally centered (translateX(-50%)) plus pan
+        designImg.style.transform = `translateX(calc(-50% + ${panOffset}px))`;
+        realityImg.style.transform = `translateX(calc(-50% + ${panOffset}px))`;
+      }
+    }
 
-  container.addEventListener('touchstart', () => isDragging = true);
-  container.addEventListener('touchend', () => isDragging = false);
-  container.addEventListener('touchmove', (e) => {
-   if (!isDragging) return;
-   updateSlider(e.touches[0].clientX);
-  });
+    function getClientX(e) {
+      return e.touches ? e.touches[0].clientX : e.clientX;
+    }
 
- </script>
+    function getImageWidth(img) {
+      return img.getBoundingClientRect().width;
+    }
+
+    function startDrag(e) {
+      const x = getClientX(e);
+      const sliderRect = slider.getBoundingClientRect();
+      const buffer = 20;
+
+      if (x >= sliderRect.left - buffer && x <= sliderRect.right + buffer) {
+        dragMode = 'split';
+      } else {
+        dragMode = 'pan';
+      }
+
+      startX = x;
+      isDragging = true;
+
+      // Prevent default to avoid unwanted text selection or scrolling
+      e.preventDefault();
+    }
+
+    function moveDrag(e) {
+      if (!isDragging) return;
+
+      const x = getClientX(e);
+      const deltaX = x - startX;
+      startX = x;
+
+      if (dragMode === 'split') {
+        const rect = container.getBoundingClientRect();
+        const offsetX = Math.max(0, Math.min(x - rect.left, rect.width));
+        splitPercentage = (offsetX / rect.width) * 100;
+        updateSplit();
+      } else if (dragMode === 'pan') {
+        const imageWidth = getImageWidth(designImg);
+        const containerWidth = container.clientWidth;
+
+        const overflow = imageWidth > containerWidth ? imageWidth - containerWidth : 0;
+        const halfOverflow = overflow / 2;
+
+        const minPan = -halfOverflow;
+        const maxPan = halfOverflow;
+
+        panOffset = Math.min(maxPan, Math.max(minPan, panOffset + deltaX));
+        updatePan();
+      }
+
+      // Prevent scrolling on touch devices while dragging
+      e.preventDefault();
+    }
+
+    function endDrag() {
+      isDragging = false;
+      dragMode = null;
+    }
+
+    container.addEventListener('mousedown', startDrag);
+    container.addEventListener('mousemove', moveDrag);
+    container.addEventListener('mouseup', endDrag);
+    container.addEventListener('mouseleave', endDrag);
+
+    container.addEventListener('touchstart', startDrag, { passive: false });
+    container.addEventListener('touchmove', moveDrag, { passive: false });
+    container.addEventListener('touchend', endDrag);
+    container.addEventListener('touchcancel', endDrag);
+
+    window.addEventListener('load', () => {
+      updateSplit();
+      updatePan();
+    });
+
+    window.addEventListener('resize', () => {
+      updatePan();
+    });
+  </script>
 
 </body>
-
 </html>
